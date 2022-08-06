@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-2 mb-2">
+        <nav class="navbar fixed-top bg-light position-relative">
+
+            <span class="position-absolute top-25 end-0 badge  text-secondary p-1" style="font-size:0.7em;">
+                update
+                2022/08/06</span>
+            <div class="container-fluid">
+                <span class="navbar-brand h1">
+                    <a class="navbar-brand" href="#">
+                        <img src="adada_logo.png" alt="" height="24" class="d-inline-block align-text-top">
+                    </a>
+                    Review Request Generator
+                </span>
+
+            </div>
+    </div>
+    </nav>
+
+    <div class="container">
+
+        <script>
+            function updateLetter(dom) {
+                //console.log("debug", dom.value);
+                if (dom.value != '') {
+                    if (dom.classList.contains('is-invalid')) {
+                        dom.classList.remove('is-invalid');
+                    }
+                }
+                else {
+                    if (!dom.classList.contains('is-invalid')) {
+                        dom.classList.add('is-invalid');
+                    }
+                }
+                let letter = getRequestText(document.querySelector('#select_requesting_format').value);
+                //console.log(letter);
+                document.querySelector('#letter-subject').innerText = letter.subject;
+                document.querySelector('#letter-body').innerHTML = letter.body;
+
+            }
+            function getRequestText(type) {
+                let name = document.querySelector('#input_name').value;
+                name = name == '' ? '<span class="bg-warning">Reviewer Name</span>' : name;
+                let affiliation = document.querySelector('#input_affiliation').value;
+                affiliation = affiliation == '' ? '<span class="bg-warning">Affiliation</span>' : affiliation;
+                let deadline = document.querySelector('#input_deadline').value;
+                deadline = deadline == '' ? '<span class="bg-warning">Deadline</span>' : deadline;
+                let number = document.querySelector('#input_number').value;
+                number = number == '' ? '<span class="bg-warning">Review Number</span>' : number;
+                let title = document.querySelector('#input_title').value;
+                title = title == '' ? '<span class="bg-warning">Paper Title</span>' : title;
+                let paper_link = document.querySelector('#input_paper_link').value;
+                paper_link = paper_link == '' ? `<span class='bg-warning'>Paper Link</span>` : paper_link;
+                let report_format = document.querySelector('#input_report_format').value;
+                report_format = report_format == '' ? `<span class='bg-warning'>Report Format</span>` : report_format;
+
+
+                if (type == 'Journal Track for a Meta [ja]') {
+                    let text_journal_track_meta_reviewer = `
+                    <p>${affiliation} ${name} 様</p>
+                    <p>投稿論文のメタ査読について（お願い） </p>
+
+                    <p>日頃よりADADAの運営には格別のご協力を賜り、厚く御礼申し上げます。 論文査読をお引き受けいただきたくメールいたします。</p>
+                    <p>このたびADADA国際会議と ADADA International Journal が連携し、ジャーナルトラックが用意されました。ジャーナルトラックは国際会議の査読判定とは別に査読を行うため、通常通りのジャーナルとしての査読、国際会議用の査読をそれぞれ行なう順序となります。 お手数をおかけしてしまいますが、なにとぞお力添えのほどお願いいたします。 </p>
+                    <p>ジャーナルトラックJTへの投稿論文[${number}], ${title} につきまして、貴殿にメタ査読を賜わりたくメールさせていただきました。 メタ査読報告の締め切りは、査読者からの査読結果が整った後、一週間後を目処としておりますが、著者への通知は${deadline}までに行う必要があります。査読者の結果が整い次第再度事務局よりご連絡差し上げますので、それまでしばらくお待ち下さい。</p>
+                    <p>論文データはPDF形式にて、以下にリンクが記載されております。査読結果はMeta_Review_JTに直接ご記入いただき、ADADAジャーナル編集委員会まで「Meta_Review_JT」のみご返信下さい。</p>
+                    <ul>
+                        <li>論文タイトル: ${title}</li>
+                        <li>論文リンク: <a href="${paper_link}">${paper_link}</a></li>
+                        <li>査読報告書: <a href="${report_format}">${report_format}</a></li>
+                        <li>締め切り:  ${deadline}</li>
+                    </ul>
+                    <p>今回のメタ査読に関しまして、不都合のある場合は、ADADA事務局まで早急にお知らせください。どうぞよろしくお願いいたします。</p>`;
+
+                    return {
+                        subject: 'メタ査読のお願い（ADADA International Journal Track）',
+                        body: text_journal_track_meta_reviewer
+                    }
+                }
+                else if (type == 'Journal Track for a Reviewer [ja]') {
+                    let letter = `<p>${affiliation} ${name}様</p>
+                    <p>日頃よりADADAの運営には格別のご協力を賜り、厚く御礼申し上げます。 論文査読をお引き受けいただきたくメールいたします。このたびADADA国際会議とジャーナル ADADAが連携し、ジャーナルトラックが用意されました。 </p>
+                    <p>ジャーナルトラックは国際会議の査読判定とは別に査読を行うため、通常通りのジャーナルとしての査読、国際会議用の査読をそれぞれ行なう順序となります。 お手数をおかけしてしまいますが、なにとぞお力添えのほどお願いいたします。</p>
+                    <p>以下のジャーナルトラック [${number}]への投稿論文に付きまして、貴殿に査読を賜りたくメールをさせていただきました。</p>
+                    <ul>
+                        <li>論文タイトル: ${title}</li>
+                        <li>論文リンク: <a href="${paper_link}">${paper_link}</a></li>
+                        <li>査読報告書: <a href="${report_format}">${report_format}</a></li>
+                        <li>締め切り:  ${deadline}</li>
+                    </ul>
+                    <p>査読報告の締め切りが短い期間とは重々承知しておりますが、どうかご容赦いただきますようお願い申し上げます。なお、論文査読は、原則として複数名の査読者による、並列査読となっています。最終的な判定決定は、それぞれの査読者から寄せられた報告書を基に編集委員会によって決定いたします。そのため、最終結果が貴殿の判定結果と異なる場合がありますことを予めご了解下さい。 また、査読者(貴殿)は著者に対して匿名となっており、同時に著者の氏名及び所属も匿名（Double Blind）とさせていただいていますが、論文の内容など情報守秘も合わせてお願いいたします。 </p>
+                    <p>今回の査読に関しまして、不都合のある場合は、ADADA事務局まで早急にお知らせください。どうぞよろしくお願いいたします。 </p>`;
+                    return {
+                        subject: '論文査読の依頼: ADADA International Journal Track',
+                        body: letter
+                    }
+                }
+                else if (type == 'Journal Track for a Reviewer [en]') {
+                    let letter = `<p>Dear ${name}</p>
+                    <p>We would like to ask you to review papers submitted to the journal track. The Journal Track was established jointly by the ADADA International Conference and ADADA International Journal.</p>
+                    <p>The journal track will be reviewed separately from the peer review decisions for the International Conference  , so the reviewing will be the same as usual for the journal and for the International Conference, respectively. We apologize for any inconvenience this may cause you and appreciate your understanding and cooperation.</p>
+                    
+                    <p>We would like to request a peer review of the following paper submitted to ADADA Journal Track [${number}].</p>
+                    <ul>
+                        <li>Paper Title: ${title}</li>
+                        <li>Paper Link: <a href="${paper_link}">${paper_link}</a></li>
+                        <li>Report Format: <a href="${report_format}">${report_format}</a></li>
+                        <li>Deadline: ${deadline}</li>
+                    </ul>
+                    <p>If you kindly accept the invitation, please return your report until ${deadline}. You can download report format from the link at the end of this email. If you do not accept the peer review, please reply to this email as soon as possible. If we do not receive a reply, we will assume that you have accepted the review and will wait for the results of the peer review until the ${deadline}.</p>
+                    <p>Thanks for your contribution in advance.</p>`;
+                    return {
+                        subject: 'Review Request: ADADA International Journal Track',
+                        body: letter
+                    }
+                }
+                return `Error: ${type} is not defined`;
+            }
+        </script>
+
+        <p class="mt-4">
+            まずは左の項目から、Letter Format
+            を選択してください。すると右に依頼分が表示されるので、残りの左の項目を埋めていけば随時文章ができあがります。黄色のマーカー箇所がなくなるまで入力を行ってください。
+        </p>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        Fiil in items
+                    </div>
+                    <div class="card-body">
+                        <div class="form-floating mb-3">
+                            <select class="form-select is-invalid" id="select_requesting_format"
+                                aria-label="Floating label select example">
+                                <option value="" checked>Select</option>
+                                <option value="Journal Track for a Meta [ja]">Journal Track for a Meta [ja]</option>
+                                <option value="Journal Track for a Meta [en]">Journal Track for a Meta [en]</option>
+                                <option value="Journal Track for a Reviewer [ja]">Journal Track for a Reviewer [ja]
+                                </option>
+                                <option value="Journal Track for a Reviewer [en]">Journal Track for a Reviewer [en]
+                                </option>
+                            </select>
+                            <label for="select_journal_type">Letter Format</label>
+                            <script>
+                                document.querySelector('#select_requesting_format').addEventListener('change', function () {
+                                    for (input of document.querySelectorAll('input')) {
+                                        input.disabled = false;
+                                    }
+                                    for (select of document.querySelectorAll('select')) {
+                                        select.disabled = false;
+                                    }
+                                    updateLetter(this);
+                                });
+                            </script>
+                        </div>
+                        <div class="form-floating mt-4 mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_name"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for="input_name">Reviewer Name (First, Family)</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_affiliation"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for=" input_name">Affiliation</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_number"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for=" input_name">Review No (fisical year + No)</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_title"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for="input_name">Paper title</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_paper_link"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for="input_name">Paper Link</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control is-invalid" id="input_report_format"
+                                placeholder="name@example.com" disabled oninput="updateLetter(this);">
+                            <label for="input_name">Report Format Link</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="floatingSelect" id="select_review_process"
+                                aria-label="Floating label select example" disabled onchange="updateLetter(this);">
+                                <option value="1st" selected>1st</option>
+                                <option value="2n">2nd</option>
+                            </select>
+                            <label for="floatingSelect">Select Review Process</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control is-invalid" id="input_deadline" disabled
+                                oninput="updateLetter(this);">
+                            <label for="input_name">Deadline (n week(s) later)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-4">
+                <div class="card">
+                    <div class="card-header bg-warning text-black">
+                        Letter
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="letter-subject">Subject</h5>
+                        <p class="card-text" id="letter-body">
+                        </p>
+                        <hr>
+                        <button class="btn btn-primary" style="width:20em" onclick="copyLetter(this);">Copy text to
+                            clipboard</button>
+                        <script>
+                            function copyLetter(dom) {
+                                var content = document.querySelector('#letter-body');
+                                navigator.clipboard.writeText(content.innerText)
+                                    .then(() => {
+                                        dom.classList.remove('btn-primary');
+                                        dom.classList.add('btn-success');
+                                        dom.innerHTML = "Copied";
+                                        setTimeout(function () {
+                                            dom.classList.remove('btn-success');
+                                            dom.classList.add('btn-primary');
+                                            dom.innerHTML = "Copy text to clipboard";
+                                        }, 1000);
+                                    })
+                                    .catch(err => {
+                                        console.log('Something went wrong', err);
+                                    })
+                            }
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <footer class="text-center text-muted small">
+            &copy; 2022 Tetsuaki BABA
+            <a href="https://github.com/TetsuakiBaba/ADADAReviewRequestGenerator" target="_blank">
+                <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-github"
+                    viewBox="0 0 24 20">
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+            </a>
+        </footer>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
